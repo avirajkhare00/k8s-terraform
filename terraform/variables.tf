@@ -6,13 +6,13 @@ variable "project_id" {
 variable "region" {
   description = "The GCP region to deploy resources in."
   type        = string
-  default     = "us-west1"
+  default     = "asia-south2"
 }
 
 variable "zone" {
   description = "The GCP zone to deploy resources in."
   type        = string
-  default     = "us-west1-a"
+  default     = "asia-south2-a"
 }
 
 variable "cluster_name" {
