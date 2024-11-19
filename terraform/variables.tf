@@ -30,7 +30,7 @@ variable "node_count" {
 variable "machine_type" {
   description = "Machine type for the GKE nodes."
   type        = string
-  default     = "e2-medium"
+  default     = "e2-small"
 }
 
 variable "gke_version" {
