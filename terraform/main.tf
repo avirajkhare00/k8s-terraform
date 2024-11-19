@@ -17,7 +17,7 @@ resource "google_project_service" "compute" {
 resource "google_container_cluster" "primary" {
   name               = var.cluster_name
   location           = var.zone
-  initial_node_count = var.node_count
+  initial_node_count = 1
 
   node_config {
     machine_type = var.machine_type
@@ -26,10 +26,6 @@ resource "google_container_cluster" "primary" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
-  }
-
-  release_channel {
-    channel = "STABLE"
   }
 
   remove_default_node_pool = true
@@ -94,7 +90,7 @@ resource "helm_release" "ingress_nginx" {
   namespace  = kubernetes_namespace.ingress_nginx.metadata[0].name
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  version    = "4.0.13" # Specify the desired version
+  version    = "4.0.13"  # Specify the desired version
 
   set {
     name  = "controller.replicaCount"
@@ -102,7 +98,7 @@ resource "helm_release" "ingress_nginx" {
   }
 
   set {
-    name  = "controller.nodeSelector." + "cloud.google.com/gke-nodepool"
+    name  = "controller.nodeSelector.cloud.google.com/gke-nodepool"
     value = "default-pool"
   }
 
@@ -152,7 +148,7 @@ resource "kubernetes_deployment" "hello_world" {
           name  = "hello-world"
           image = "nginx:latest"
 
-          ports {
+          port {
             container_port = 80
           }
         }
@@ -201,12 +197,8 @@ resource "kubernetes_ingress" "hello_world" {
         path {
           path = "/"
           backend {
-            service {
-              name = kubernetes_service.hello_world.metadata[0].name
-              port {
-                number = 80
-              }
-            }
+            service_name = kubernetes_service.hello_world.metadata[0].name
+            service_port = 80
           }
         }
       }
