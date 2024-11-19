@@ -1,5 +1,10 @@
 name: k8s cluster provision on gke
 
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
