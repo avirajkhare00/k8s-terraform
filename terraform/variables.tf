@@ -18,7 +18,7 @@ variable "zone" {
 variable "cluster_name" {
   description = "The name of the GKE cluster."
   type        = string
-  default     = "my-gke-cluster"
+  default     = "my-gke-cluster-1"
 }
 
 variable "node_count" {
@@ -30,7 +30,7 @@ variable "node_count" {
 variable "machine_type" {
   description = "Machine type for the GKE nodes."
   type        = string
-  default     = "e2-small"
+  default     = "e2-medium"
 }
 
 variable "gke_version" {
