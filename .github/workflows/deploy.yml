@@ -1,19 +1,45 @@
 name: k8s cluster provision on gke
 
-on:
-  push:
-    branches:
-      - main
-
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-      - uses: google-github-actions/auth@v1
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      # Step 3: Authenticate to Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-      - run: terraform init
-      - run: terraform plan -out=tfplan
-      - run: terraform apply -auto-approve tfplan
+
+      # Step 4: Set environment variables for Terraform variables
+      - name: Set Terraform Variables
+        env:
+          TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+          TF_VAR_region: ${{ secrets.GCP_REGION }}
+          TF_VAR_zone: ${{ secrets.GCP_ZONE }}
+        run: echo "Terraform variables set."
+
+      # Step 5: Initialize Terraform
+      - name: Terraform Init
+        run: terraform init
+
+      # Step 6: Validate Terraform configuration
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Step 7: Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      # Step 8: Terraform Apply
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
