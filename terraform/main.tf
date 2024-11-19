@@ -16,7 +16,7 @@ resource "google_project_service" "compute" {
 # Create GKE Cluster
 resource "google_container_cluster" "primary" {
   name               = var.cluster_name
-  location           = var.zone
+  location           = "${var.region}-a"
   initial_node_count = 1
 
   node_config {
@@ -90,7 +90,7 @@ resource "helm_release" "ingress_nginx" {
   namespace  = kubernetes_namespace.ingress_nginx.metadata[0].name
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  version    = "4.0.13"  # Specify the desired version
+  version    = "4.0.13" # Specify the desired version
 
   set {
     name  = "controller.replicaCount"
