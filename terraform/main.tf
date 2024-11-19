@@ -16,7 +16,7 @@ resource "google_project_service" "compute" {
 # Create GKE Cluster
 resource "google_container_cluster" "primary" {
   name               = var.cluster_name
-  location           = var.zone
+  location           = var.region
   initial_node_count = 1
 
   node_config {
