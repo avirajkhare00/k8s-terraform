@@ -48,5 +48,5 @@ variable "ingress_namespace" {
 variable "hello_namespace" {
   description = "Namespace for the Hello World application."
   type        = string
-  default     = "default"
+  default     = "hello-namespace"
 }

@@ -84,6 +84,10 @@ resource "kubernetes_namespace" "ingress_nginx" {
   metadata {
     name = var.ingress_namespace
   }
+  depends_on = [
+    google_container_cluster.primary,
+    google_container_node_pool.primary_nodes
+  ]
 }
 
 # Deploy NGINX Ingress Controller using Helm
@@ -110,6 +114,13 @@ resource "helm_release" "ingress_nginx" {
   }
 
   timeout = 600
+
+  depends_on = [
+    google_container_cluster.primary,
+    google_container_node_pool.primary_nodes,
+    kubernetes_namespace.ingress_nginx
+  ]
+
 }
 
 # Namespace for Hello World Application
