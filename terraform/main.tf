@@ -30,7 +30,7 @@ resource "google_container_cluster" "primary" {
     ]
   }
 
-  remove_default_node_pool = true
+  // remove_default_node_pool = true
 }
 
 # Create a Node Pool
