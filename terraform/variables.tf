@@ -24,13 +24,13 @@ variable "cluster_name" {
 variable "node_count" {
   description = "Number of nodes in the GKE cluster."
   type        = number
-  default     = 3
+  default     = 2
 }
 
 variable "machine_type" {
   description = "Machine type for the GKE nodes."
   type        = string
-  default     = "e2-medium"
+  default     = "e2-small"
 }
 
 variable "gke_version" {
